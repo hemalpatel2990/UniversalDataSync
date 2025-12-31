@@ -7,6 +7,7 @@
 #include "Net/Serialization/FastArraySerializer.h"
 #include "InstancedStruct.h"
 #include "StructUtils/InstancedStruct.h"
+
 #include "NeoReplicatedData.generated.h"
 
 struct FNeoDataMap;
@@ -38,10 +39,15 @@ struct NEODATASYNC_API FRecordKey
 	{
 		if (Key.KeyData.IsValid())
 		{
-			// Hash the raw memory of the struct
+			// WARNING: MemCrc32 includes padding! Structs must be FMemory::Memzero'd before use.
+			// Preferred: Use the struct's own hash function if available, or hash properties.
 			const UScriptStruct* ScriptStruct = Key.KeyData.GetScriptStruct();
+			
+			// Note: This still risks padding issues but is the only generic options without reflection iteration.
+			// Ideally: return ScriptStruct->GetStructTypeHash(Key.KeyData.GetMemory());
 			return FCrc::MemCrc32(Key.KeyData.GetMemory(), ScriptStruct->GetStructureSize());
 		}
+		
 		return 0;
 	}
 };

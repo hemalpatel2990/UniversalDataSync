@@ -2,7 +2,6 @@
 
 #include "NeoReplicatedData.h"
 #include "Net/UnrealNetwork.h"
-#include "Engine/ActorChannel.h"
 
 // ------------------------------------------------------------------------------------------------
 // FNeoDataEntry
