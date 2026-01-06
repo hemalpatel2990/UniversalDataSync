@@ -50,21 +50,27 @@ You can optionally restrict the component to only accept specific Key or Value t
     *   **Value:** Construct your struct and pass it in.
 
 **Creating a Key Wrapper:**
+
 ![Init Key Type](Resources/Docs/Init_KeyType.png)
 
 **Creating a Value Wrapper:**
+
 ![Init Value Type](Resources/Docs/Init_ValueType.png)
 
 **Setting the Data:**
+
 ![Set Data](Resources/Docs/SetData_KeyValue.png)
 
 ### 3. Reading Data (Blueprints)
 1.  On the Client (or Server), bind to the `On Key Updated` event.
+    
     ![Component Events](Resources/Docs/Component_Events.png)
+
 2.  When the event fires, cast the **Value** to your specific struct type (e.g., `FPlayerStats`).
 3.  Use the data to update your UI or Gameplay logic.
 
 **Getting Data:**
+
 ![Get Data](Resources/Docs/GetData_KeyValue.png)
 
 ### 4. C++ API
@@ -210,6 +216,7 @@ bool AMyCharacter::IsQuestComplete(FName QuestId)
 ```
 
 **Updating a Struct Payload:**
+
 ![Update Key Value](Resources/Docs/Update_KeyOrValueStruct.png)
 
 ---
