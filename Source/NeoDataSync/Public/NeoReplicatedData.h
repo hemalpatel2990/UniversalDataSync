@@ -26,7 +26,7 @@ struct NEODATASYNC_API FRecordKey
 	FRecordKey() {}
 	FRecordKey(const FInstancedStruct& InKeyData) : KeyData(InKeyData) {}
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data Sync", meta = (BaseStruct = "NeoKeyBase"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data Sync")
 	FInstancedStruct KeyData;
 
 	bool operator==(const FRecordKey& Other) const
