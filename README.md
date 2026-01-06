@@ -86,6 +86,52 @@ if (MyComponent->GetTypedData(FName("HeroStats"), Result))
 *   **Supported Platforms:** Windows, Mac, Linux, Android, iOS.
 *   **Engine Version:** 5.3+
 
+## Example Data Structures
+
+Here are some examples of how you can define structs for different game systems to use with `NeoDataSync`.
+
+### Inventory Item
+```cpp
+USTRUCT(BlueprintType)
+struct FNeoData_InventoryItem
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FString ItemId;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    int32 Quantity = 1;
+
+    // Optional: Implement operator== for optimized delta replication
+    bool operator==(const FNeoData_InventoryItem& Other) const
+    {
+        return ItemId == Other.ItemId && Quantity == Other.Quantity;
+    }
+};
+```
+
+### Quest Objective
+```cpp
+USTRUCT(BlueprintType)
+struct FNeoData_QuestObjective
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FText Description;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    int32 CurrentCount = 0;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    int32 TargetCount = 10;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    bool bIsComplete = false;
+};
+```
+
 ---
 
 ## Support
