@@ -132,6 +132,64 @@ struct FNeoData_QuestObjective
 };
 ```
 
+## Practical Usage Scenarios
+
+One of the strengths of `NeoDataSync` is that different components (or even the same component) can store completely different types of data.
+
+### Scenario A: Inventory System
+Imagine your `PlayerState` has a `UNeoReplicatedDataComponent` named **InventoryComp**. You can strictly store `FNeoData_InventoryItem` structs in it.
+
+```cpp
+// ADDING AN ITEM (Server)
+void AMyPlayerState::AddItem(FString ItemId, int32 Qty)
+{
+    FNeoData_InventoryItem NewItem;
+    NewItem.ItemId = ItemId;
+    NewItem.Quantity = Qty;
+
+    // We use the ItemId as the Map Key so looking it up is fast
+    InventoryComp->SetTypedData(FName(*ItemId), NewItem);
+}
+
+// READING AN ITEM (Client/Server)
+int32 AMyPlayerState::GetItemQuantity(FString ItemId)
+{
+    FNeoData_InventoryItem ExistingItem;
+    // We try to retrieve data specifically as an InventoryItem
+    if (InventoryComp->GetTypedData(FName(*ItemId), ExistingItem))
+    {
+        return ExistingItem.Quantity;
+    }
+    return 0;
+}
+```
+
+### Scenario B: Quest System
+On the same character, you might have another `UNeoReplicatedDataComponent` named **QuestComp**. This one stores `FNeoData_QuestObjective` structs.
+
+```cpp
+// UPDATING A QUEST (Server)
+void AMyCharacter::UpdateQuestProgress(FName QuestId, int32 NewCount)
+{
+    FNeoData_QuestObjective Objective;
+    // ... (Populate objective data) ...
+    Objective.CurrentCount = NewCount;
+
+    QuestComp->SetTypedData(QuestId, Objective);
+}
+
+// CHECKING COMPLETION (UI)
+bool AMyCharacter::IsQuestComplete(FName QuestId)
+{
+    FNeoData_QuestObjective Objective;
+    if (QuestComp->GetTypedData(QuestId, Objective))
+    {
+        return Objective.bIsComplete;
+    }
+    return false;
+}
+```
+
 ---
 
 ## Support
